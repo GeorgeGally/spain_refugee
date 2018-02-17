@@ -35,60 +35,57 @@
     console.log(engine);
 
     var c = 0;
-
+    var country_max = 0;
     function draw() {
-      ctx.background(0);
+      ctx.background(0, 0.6);
       c = frameCount % 200;
       //console.log('c', c);
       if (c >= 0 && c < 10) {
-        ctx.background(0);
+        ctx.background(255);
       }
       moveParticles();
       drawParticles();
-      if (frameCount % 50 == 0 && countries.length > 0) {
+      if (frameCount % 10 == 0 && countries.length > 0) {
         country_dataset_counter++;
         //console.log(countries[country_counter]);
         if(country_dataset_counter > countries[country_counter].length-1) {
           country_counter++;
           if(country_counter> countries.length-1) country_counter = 0;
         }
+        country_max = getMax(countries[country_counter]);
+        //console.log(country_max);
         addParticle();
       }
     }
 
-
+    function getMax(c){
+      var max = 0;
+      var min = 1000000;
+    for (var i = 0; i < c.length; i++) {
+      if(max< c[i]) max = c[i];
+      if(min > c[i]) min = c[i];
+    }
+    return {max: max, min: min};
+}
     function addParticle() {
-      // for (var i = 0; i < engine.length; i++) {
-      //   var p = engine.particles[i];
-      //   var c = countries[i];
-        //if(i == 10) console.log(c.length-1);
-        // var pt = counter % (c.length-1);
 
         var data_point = countries[country_counter][country_dataset_counter];
+        //console.log('data_point', data_point);
         engine2.add(0, h, 0, frameCount);
         var p2 = engine2.last;
-        p2.sz = map(data_point, 0, 500, 20, 200);;
-        p2.speed.y = map(data_point, 0, 500, 20, 100);
-        p2.c = rgba(0, 0, 220, 0.5);
-        p2.on = 0;
-        //console.log(engine2.last);
-      //}
+        p2.sz = map(data_point, country_max.min, country_max.max, 20, h);;
+        p2.speed.y = map(data_point, country_max.min, country_max.max, 5, 20);
+        p2.c = rgba(0, 0, 220);
+        //console.log('p2.sz', p2.sz);
+
     }
 
     function moveParticles() {
       for (var i = engine2.length - 1; i >= 0; i--) {
         var p = engine2.particles[i];
-        if(!p.on) {
-          p.sz += p.speed.y;
-        } else {
-          p.sz -= p.speed.y;
-        }
-
-        if(p.sz > h) {
-          p.on = 1;
-        }
-
-        if (p.sz < 0) {
+        p.pos.y -= p.speed.y;
+        p.speed.y += 0.1;
+        if (p.pos.y < 0) {
           engine.delete(p.me);
         }
       }
@@ -102,12 +99,12 @@
           ctx.fillStyle = rgb(0);
 
           if (c >= 0 && c < 10) {
-            ctx.fillStyle = rgba(220, 0,0, 0.6);
+            ctx.fillStyle = rgba(220, 0,0);
           } else {
             ctx.fillStyle = p.c;
           }
-
-          ctx.fillRect(0, h, w, -p.sz);
+          var sz = p.sz + Math.sin(frameCount/10) * p.sz;
+          ctx.fillRect(0, p.pos.y, w, sz);
 
         }
       }
