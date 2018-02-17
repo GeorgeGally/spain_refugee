@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+  <meta charset="utf-8">
+  <script language="javascript" src="js/creative_coding.js"></script>
+  <script language="javascript" src="js/canvas.js"></script>
+  <script language="javascript" src="js/raw_video.js"></script>
+  <script language="javascript" src="js/particle_engine.js"></script>
+  <script language="javascript" src="js/d3.js"></script>
+  <script src="js/Tone.js"></script>
+
+  <link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+
+var engine = new particleEngine(2, 2);
+
+var old_red = [];
+var old_green = [];
+var old_blue = [];
+var pixelsize = 40;
+var video_scale;
+var data = [];
+var url = "data/country_values.json";
+
+function setup(){
+  load(url)
+  frameRate = 60;
+  video_scale = new Vector(video.width/w, video.height/h);
+  for (var i = 0; i < engine.particles.length; i++) {
+    var p = engine.particles[i];
+    p.scale = 1;
+    p.target.z = random(-15, 15);
+    p.sz = {x: w/engine.grid.num_items_horiz, y: h/engine.grid.num_items_vert};
+    p.bright = 0;
+    p.col =  [];
+  }
+}
+console.log(engine);
+
+
+
+function draw(){
+  ctx.background(245);
+  videoshit();
+
+  drawParticles();
+  playSong();
+}
+
+
+function drawParticles(){
+
+  for (var i = 0; i < engine.particles.length; i++) {
+    var p = engine.particles[i];
+    ctx.fillStyle = p.c;
+    ctx.centreFillRect(p.pos.x, p.pos.y, p.sz.x, p.sz.y);
+  }
+
+}
+
+
+
+
+
+
+
+////// synth stuff
+
+var reverb = new Tone.JCReverb(0.8).connect(Tone.Master);
+var pingPong = new Tone.PingPongDelay("2n", 0.8).toMaster();
+var delay = new Tone.FeedbackDelay(0.9);
+
+var synth = new Tone.PolySynth(6, Tone.MonoSynth).toMaster();
+// var synth = new Tone.PolySynth(3, Tone.MonoSynth).toMaster();
+//var synth = new Tone.SimpleAM().toMaster();
+//var synth = new Tone.PolySynth(3, Tone.DuoSynth).toMaster();
+//var synth = new Tone.PolySynth(8, Tone.SimpleAM).chain(pingPong, reverb)
+
+// synth.set("detune", -1200);
+synth.set("detune", -100);
+
+//var scale = ['A4', 'B4', 'C4', 'D4', 'E4', 'F4', 'G#4', 'A4'];
+//var scale = ['C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B#3', 'C3'];
+//var scale =  ["C3", "D#3", "F3", "F#3", "G3", "A#3"];
+// var scale =  ["C2", "D#2", "F2", "F#2", "G2", "A#2","C3", "D#3", "F3", "F#3", "G3", "A#3"];
+// var scale =  ["C2", "D#2", "F2", "F#2", "G2", "A#2","C3", "D#3", "F3", "F#3", "G3", "A#3","C4", "D#4", "F4", "F#4", "G4", "A#4"];
+//var scale =  ["C1", "D#1", "F1", "F#1", "G1", "A#1","C2", "D#2", "F2", "F#2", "G2", "A#2","C3", "D#3", "F3", "F#3", "G3", "A#3","C4", "D#4", "F4", "F#4", "G4", "A#4"];
+//var scale =  ["C2", "D#2", "F2", "F#2", "G2", "A#2"];
+// var scale = ["D3", "E3", "G3", "A3", "B3"];
+var scale = ["D1", "E1", "G1", "A1", "B1","D2", "E2", "G2", "A2", "B2","D3", "E3", "G3", "A3", "B3","D4", "E4", "G4", "A4", "B4"];
+
+
+//////////////////
+
+
+function playSong(){
+
+      for (var i = 0; i < engine.particles.length; i++) {
+        var p = engine.particles[i];
+        var note = Math.round(map(p.col.r + p.col.g, 0, 510, 0, scale.length-1));
+        //console.log('note', scale[note]);
+        if(p.bright > 0 && frameCount%10 == 0) {
+          synth.triggerAttackRelease(scale[note], 0.1, p.bright*2);
+        }
+
+      }
+
+
+}
+
+
+
+
+function load(url) {
+  //var vals = [];
+  d3.json(url, function(error, d) {
+
+    if (error) console.log(error);
+    data = d;
+    console.log(data);
+    for (var i = 0; i < data.length; i++) {
+      var d = data[i];
+      console.log(d.length);
+
+    }
+
+
+  });
+}
+
+
+function videoshit(){
+
+  hidden_ctx.drawImage(video, 0,0, w, h);
+  sample = hidden_ctx.getImageData(0,0,w,h);
+
+  ctx.fillStyle = rgba(255, 0.3);
+
+  for (var i = 0; i < engine.particles.length; i++) {
+    var p = engine.particles[i];
+
+    var pos = Math.round(Math.round(p.pos.x)  + Math.round(p.pos.y) * w) * 4;
+    var r = sample.data[pos];
+    var g = sample.data[pos+1];
+    var b = sample.data[pos+2];
+    p.c = rgb(r,g,b);
+    p.col = {r: r, g: g, b: b}
+    p.bright = brightness(r,g,b, 0, 20);
+    //chanceLog(p.target.z);
+
+  }
+}
+
+
+</script>
+
+</body>
+
+</html>
