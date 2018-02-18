@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function() {
         //   facingMode: "environment"
         // }]
         video: {
-      sourceId: cams[cams.length-1].deviceId
+      sourceId: cams[0].deviceId
     }
       };
 
