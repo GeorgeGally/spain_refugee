@@ -135,7 +135,7 @@
 
     ////// synth stuff
 
-    var reverb = new Tone.JCReverb(reverb_ammt).connect(Tone.Master);
+    var reverb = new Tone.JCReverb(reverb_ammt).toMaster();
     var pingPong = new Tone.PingPongDelay("4n", 0.2).toMaster();
     var delay = new Tone.FeedbackDelay(delay_ammt).connect(Tone.Master);
 
@@ -144,6 +144,7 @@
     //var synth = new Tone.SimpleAM().toMaster();
     //var synth = new Tone.PolySynth(6, Tone.MonoSynth).chain(reverb);
     var synth = new Tone.PolySynth(3, Tone.DuoSynth).chain(reverb);
+    //var synth = new Tone.PolySynth(3, Tone.DuoSynth);
     //var synth = new Tone.PolySynth(8, Tone.SimpleAM).chain(pingPong, reverb)
   //  var synth = new Tone.PolySynth(2, Tone.SimpleAM).chain(reverb)
 
