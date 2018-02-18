@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       });
       errorElement.innerHTML += '<p>' + msg + '</p>';
-      var videoSource = cams[0].deviceId
+      var videoSource = cams[cams.length-1].deviceId
       constraints = {
         audio: false,
         // video: true,
