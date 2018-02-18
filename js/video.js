@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function handleSuccess(stream) {
     var videoTracks = stream.getVideoTracks();
+    console.log('videoTracks', videoTracks);
     console.log('Got stream with constraints:', constraints);
     console.log('Using video device: ' + videoTracks[0].label);
     stream.oninactive = function() {
@@ -65,6 +66,29 @@ document.addEventListener("DOMContentLoaded", function() {
       console.error(error);
     }
   }
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+  console.log("enumerateDevices() not supported.");
+  return;
+}
+
+// List cameras and microphones.
+
+navigator.mediaDevices.enumerateDevices()
+  .then(function(devices) {
+    var msg = "";
+    devices.forEach(function(device) {
+      console.log(device);
+      if(device.kind == "videoinput")
+      msg += device.kind + ": " + device.label +
+        " id = " + device.deviceId +  "<br>";
+    });
+    errorElement.innerHTML += '<p>' + msg + '</p>';
+  })
+  .catch(function(err) {
+    console.log(err.name + ": " + err.message);
+  });
+
 
   navigator.mediaDevices.getUserMedia(constraints).
       then(handleSuccess).catch(handleError);
