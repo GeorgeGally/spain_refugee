@@ -139,26 +139,26 @@
     var pingPong = new Tone.PingPongDelay("4n", 0.2).toMaster();
     var delay = new Tone.FeedbackDelay(delay_ammt).connect(Tone.Master);
 
-    //var synth = new Tone.PolySynth(6, Tone.MonoSynth).chain(reverb);
+    var synth = new Tone.PolySynth(6, Tone.MonoSynth).chain(reverb);
     //var synth = new Tone.PolySynth(3, Tone.MonoSynth).toMaster();
     //var synth = new Tone.SimpleAM().toMaster();
-    var synth = new Tone.PolySynth(8, Tone.DuoSynth).chain(reverb);
+    //var synth = new Tone.PolySynth(8, Tone.DuoSynth).chain(reverb);
     //var synth = new Tone.PolySynth(3, Tone.DuoSynth).chain(reverb);
 
-    var synth = new Tone.Synth({
-	oscillator : {
-  	type : 'fmsquare',
-    modulationType : 'sawtooth',
-    modulationIndex : 3,
-    harmonicity: 3.4
-  },
-  envelope : {
-  	attack : 0.001,
-    decay : 0.1,
-    sustain: 0.1,
-    release: 0.1
-  }
-}).toMaster()
+//     var synth = new Tone.Synth({
+// 	oscillator : {
+//   	type : 'fmsquare',
+//     modulationType : 'sawtooth',
+//     modulationIndex : 3,
+//     harmonicity: 3.4
+//   },
+//   envelope : {
+//   	attack : 0.001,
+//     decay : 0.1,
+//     sustain: 0.1,
+//     release: 0.1
+//   }
+// }).toMaster()
 
 
 // var synth = new Tone.FMSynth();
@@ -177,20 +177,20 @@
 //
 
 
-var synth = new Tone.Synth({
-  oscillator : {
-  	type : 'fmsquare',
-        modulationType : 'sawtooth',
-        modulationIndex : 3,
-        harmonicity: 3.4
-  },
-  envelope : {
-  	attack : 0.001,
-        decay : 0.1,
-        sustain: 0.1,
-        release: 0.1
-  }
-}).toMaster()
+// var synth = new Tone.Synth({
+//   oscillator : {
+//   	type : 'fmsquare',
+//         modulationType : 'sawtooth',
+//         modulationIndex : 3,
+//         harmonicity: 3.4
+//   },
+//   envelope : {
+//   	attack : 0.001,
+//         decay : 0.1,
+//         sustain: 0.1,
+//         release: 0.1
+//   }
+// }).toMaster()
 
     //var synth = new Tone.PolySynth(3, Tone.DuoSynth);
     //var synth = new Tone.PolySynth(8, Tone.SimpleAM).chain(pingPong, reverb)
