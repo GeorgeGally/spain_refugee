@@ -16,14 +16,6 @@ document.addEventListener("DOMContentLoaded", function() {
   video.height = 120;
   video.zIndex = 999;
 
-  /*
-   *  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
-   *
-   *  Use of this source code is governed by a BSD-style license
-   *  that can be found in the LICENSE file in the root of the source
-   *  tree.
-   */
-
   'use strict';
 
   var errorElement = document.querySelector('#errorMsg');
@@ -75,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // List cameras and microphones.
-
+  var cams = [];
   navigator.mediaDevices.enumerateDevices()
     .then(function(devices) {
       var msg = "";
@@ -83,8 +75,9 @@ document.addEventListener("DOMContentLoaded", function() {
         if (device.kind == "videoinput") {
           console.log(device);
 
-          msg += device.kind + ": " + device.label +
-            " id = " + device.deviceId + "<br>";
+          msg += device.kind + ": " + device.label+ "<br>" +
+            " id = " + device.deviceId + "<br><br>";
+            cams.push(device);
         }
       });
       errorElement.innerHTML += '<p>' + msg + '</p>';
