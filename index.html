@@ -160,17 +160,22 @@
   }
 }).toMaster()
 
-var synth = new Tone.Synth({
-oscillator : {
-  type : 'triangle8'
-},
-envelope : {
-  attack : 2,
-  decay : 1,
-  sustain: 0.4,
-  release: 4
-}
-}).toMaster()
+
+var synth = new Tone.FMSynth();
+var basslineVolume = new Tone.Volume(-4.25);
+var basslineDistortion = new Tone.Distortion(2.5);
+var basslineDelay = new Tone.FeedbackDelay(0.25);
+var basslinePhaser = new Tone.Phaser({
+	"frequency" : 12.5,
+	"depth" : 15,
+	"baseFrequency" : 2500
+})
+synth.chain(basslineDistortion, basslineDelay);
+synth.chain(basslineDistortion, basslinePhaser);
+synth.chain(basslinePhaser, basslineVolume);
+synth.chain(basslineVolume, Tone.Master);
+
+
 
     //var synth = new Tone.PolySynth(3, Tone.DuoSynth);
     //var synth = new Tone.PolySynth(8, Tone.SimpleAM).chain(pingPong, reverb)
