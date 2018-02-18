@@ -41,7 +41,7 @@
 
 
   // SOUND TWEAKS
-  var notehold = 1.77;
+  var notehold = 7.77;
   var detune_ammt = -1400;
   var sound_step = 67;
   var reverb_ammt = 0.8;
@@ -142,12 +142,12 @@
     //var synth = new Tone.PolySynth(6, Tone.MonoSynth).chain(reverb);
     //var synth = new Tone.PolySynth(3, Tone.MonoSynth).toMaster();
     //var synth = new Tone.SimpleAM().toMaster();
-    var synth = new Tone.PolySynth(8, Tone.MonoSynth).chain(reverb);
+    //var synth = new Tone.PolySynth(8, Tone.MonoSynth).chain(reverb);
     //var synth = new Tone.PolySynth(3, Tone.DuoSynth).chain(reverb);
 
     //var synth = new Tone.PolySynth(3, Tone.DuoSynth);
     //var synth = new Tone.PolySynth(8, Tone.SimpleAM).chain(pingPong, reverb)
-    //var synth = new Tone.PolySynth(2, Tone.SimpleAM).chain(reverb)
+    var synth = new Tone.PolySynth(2, Tone.SimpleAM).chain(reverb)
 
     synth.set("detune", detune_ammt);
     //synth.set("detune", -600);
