@@ -81,15 +81,14 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       });
       errorElement.innerHTML += '<p>' + msg + '</p>';
-      constraints = window.constraints = {
+      var videoSource = cams[0].deviceId
+      constraints = {
         audio: false,
         // video: true,
         // advanced: [{
         //   facingMode: "environment"
         // }]
-        video: {
-      sourceId: cams[0].deviceId
-    }
+        video: {deviceId: videoSource ? {exact: videoSource} : undefined}
       };
 
       navigator.mediaDevices.getUserMedia(constraints).
