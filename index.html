@@ -139,58 +139,11 @@
     var pingPong = new Tone.PingPongDelay("4n", 0.2).toMaster();
     var delay = new Tone.FeedbackDelay(delay_ammt).connect(Tone.Master);
 
-    var synth = new Tone.PolySynth(6, Tone.MonoSynth).chain(reverb);
+    //var synth = new Tone.PolySynth(6, Tone.MonoSynth).chain(reverb);
     //var synth = new Tone.PolySynth(3, Tone.MonoSynth).toMaster();
     //var synth = new Tone.SimpleAM().toMaster();
-    //var synth = new Tone.PolySynth(8, Tone.DuoSynth).chain(reverb);
+    var synth = new Tone.PolySynth(8, Tone.MonoSynth).chain(reverb);
     //var synth = new Tone.PolySynth(3, Tone.DuoSynth).chain(reverb);
-
-//     var synth = new Tone.Synth({
-// 	oscillator : {
-//   	type : 'fmsquare',
-//     modulationType : 'sawtooth',
-//     modulationIndex : 3,
-//     harmonicity: 3.4
-//   },
-//   envelope : {
-//   	attack : 0.001,
-//     decay : 0.1,
-//     sustain: 0.1,
-//     release: 0.1
-//   }
-// }).toMaster()
-
-
-// var synth = new Tone.FMSynth();
-// var basslineVolume = new Tone.Volume(-4.25);
-// var basslineDistortion = new Tone.Distortion(2.5);
-// var basslineDelay = new Tone.FeedbackDelay(0.25);
-// var basslinePhaser = new Tone.Phaser({
-// 	"frequency" : 12.5,
-// 	"depth" : 15,
-// 	"baseFrequency" : 2500
-// })
-// synth.chain(basslineDistortion, basslineDelay);
-// synth.chain(basslineDistortion, basslinePhaser);
-// synth.chain(basslinePhaser, basslineVolume);
-// synth.chain(basslineVolume, Tone.Master);
-//
-
-
-// var synth = new Tone.Synth({
-//   oscillator : {
-//   	type : 'fmsquare',
-//         modulationType : 'sawtooth',
-//         modulationIndex : 3,
-//         harmonicity: 3.4
-//   },
-//   envelope : {
-//   	attack : 0.001,
-//         decay : 0.1,
-//         sustain: 0.1,
-//         release: 0.1
-//   }
-// }).toMaster()
 
     //var synth = new Tone.PolySynth(3, Tone.DuoSynth);
     //var synth = new Tone.PolySynth(8, Tone.SimpleAM).chain(pingPong, reverb)
@@ -209,7 +162,7 @@
     //var scale =  ["C2", "D#2", "F2", "F#2", "G2", "A#2"];
     //var scale = ["D3", "E3", "G3", "A3", "B3"];
     //var scale = ["D1", "E1", "G1", "A1", "B1","D2", "E2", "G2", "A2", "B2","D3", "E3", "G3", "A3", "B3","D4", "E4", "G4", "A4", "B4"];
-    // Tone.startMobile();
+
 
     var note_counter = 0;
 
