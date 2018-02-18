@@ -144,6 +144,22 @@
     }
 
 
+  function gertMinMax(data, output_array){
+      var min = 10000;
+      var max = -10000;
+      for (var i = 0; i < data.length; i++) {
+        var d = data[i];
+        if (max < d) max = d;
+        if (min > d) min = d;
+      }
+      min_max = {
+        min: min,
+        max: max
+      };
+      output_array = min_max;
+    }
+  }
+
     function mapData(data) {
       var d = [];
       for (var key in data) {

@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   video.autoplay = true;
   video.loop = true;
+  video.muted = true;
   video.setAttribute("id", "gum-local");
   //video.setAttribute("style", "display:none;");
   video.width = 160;
@@ -75,17 +76,18 @@ document.addEventListener("DOMContentLoaded", function() {
       devices.forEach(function(device) {
         if (device.kind == "videoinput") {
           console.log(device);
-
-          msg += device.kind + ": " + device.label+ "<br>" +
-            " id = " + device.deviceId + "<br><br>";
+          msg += device.label+ "<br>"
+          // msg += device.kind + ": " + device.label+ "<br>"
+            //+ " id = " + device.deviceId + "<br><br>";
             cams.push(device);
             option.text = device.label || 'camera ' + (videoSelect.length + 1);
+            option.id = device.deviceId;
             videoSelect.appendChild(option);
         }
       });
       errorElement.innerHTML += '<p>' + msg + '</p>';
       var videoSource = cams[cams.length-1].deviceId;
-      console.log(videoSelect.value);
+      console.log(videoSelect.id);
       //var videoSource = videoSelect.value;
       constraints = {
         audio: false,

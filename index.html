@@ -42,7 +42,7 @@
 
 var ctx = createCanvas("canvas1");
 
-var engine = new particleEngine(2, 2);
+var engine = new particleEngine(1, 8);
 
 var old_red = [];
 var old_green = [];
@@ -73,7 +73,7 @@ function draw(){
   videoshit();
 
   drawParticles();
-  playSong();
+  if(frameCount%20 == 0) playSong();
 }
 
 
@@ -91,46 +91,50 @@ function drawParticles(){
 
 ////// synth stuff
 
-var reverb = new Tone.JCReverb(0.8).connect(Tone.Master);
-var pingPong = new Tone.PingPongDelay("2n", 0.8).toMaster();
+var reverb = new Tone.JCReverb(0.3).connect(Tone.Master);
+var pingPong = new Tone.PingPongDelay("1n", 0.1).toMaster();
 var delay = new Tone.FeedbackDelay(0.9);
 
-var synth = new Tone.PolySynth(6, Tone.MonoSynth).toMaster();
-// var synth = new Tone.PolySynth(3, Tone.MonoSynth).toMaster();
+var synth = new Tone.PolySynth(6, Tone.MonoSynth).chain(reverb);
+//var synth = new Tone.PolySynth(3, Tone.MonoSynth).toMaster();
 //var synth = new Tone.SimpleAM().toMaster();
 //var synth = new Tone.PolySynth(3, Tone.DuoSynth).toMaster();
-//var synth = new Tone.PolySynth(8, Tone.SimpleAM).chain(pingPong, reverb)
+// var synth = new Tone.PolySynth(8, Tone.SimpleAM).chain(pingPong, reverb)
+//var synth = new Tone.PolySynth(8, Tone.SimpleAM).chain(reverb)
 
-// synth.set("detune", -1200);
-synth.set("detune", -100);
+synth.set("detune", -1200);
+//synth.set("detune", -100);
 
 //var scale = ['A4', 'B4', 'C4', 'D4', 'E4', 'F4', 'G#4', 'A4'];
 //var scale = ['C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B#3', 'C3'];
 //var scale =  ["C3", "D#3", "F3", "F#3", "G3", "A#3"];
 // var scale =  ["C2", "D#2", "F2", "F#2", "G2", "A#2","C3", "D#3", "F3", "F#3", "G3", "A#3"];
-// var scale =  ["C2", "D#2", "F2", "F#2", "G2", "A#2","C3", "D#3", "F3", "F#3", "G3", "A#3","C4", "D#4", "F4", "F#4", "G4", "A#4"];
-//var scale =  ["C1", "D#1", "F1", "F#1", "G1", "A#1","C2", "D#2", "F2", "F#2", "G2", "A#2","C3", "D#3", "F3", "F#3", "G3", "A#3","C4", "D#4", "F4", "F#4", "G4", "A#4"];
+//var scale =  ["C2", "D#2", "F2", "F#2", "G2", "A#2","C3", "D#3", "F3", "F#3", "G3", "A#3","C4", "D#4", "F4", "F#4", "G4", "A#4"];
+var scale =  ["C1", "D#1", "F1", "F#1", "G1", "A#1","C2", "D#2", "F2", "F#2", "G2", "A#2","C3", "D#3", "F3", "F#3", "G3", "A#3","C4", "D#4", "F4", "F#4", "G4", "A#4"];
 //var scale =  ["C2", "D#2", "F2", "F#2", "G2", "A#2"];
 // var scale = ["D3", "E3", "G3", "A3", "B3"];
-var scale = ["D1", "E1", "G1", "A1", "B1","D2", "E2", "G2", "A2", "B2","D3", "E3", "G3", "A3", "B3","D4", "E4", "G4", "A4", "B4"];
+//var scale = ["D1", "E1", "G1", "A1", "B1","D2", "E2", "G2", "A2", "B2","D3", "E3", "G3", "A3", "B3","D4", "E4", "G4", "A4", "B4"];
 
 
 //////////////////
 
+var note_counter = 0;
 
 function playSong(){
-
-      for (var i = 0; i < engine.particles.length; i++) {
-        var p = engine.particles[i];
+      //
+      note_counter++;
+      note_counter = note_counter%engine.particles.length-1;
+      //for (var i = 0; i < engine.particles.length; i++) {
+        var p = engine.particles[note_counter];
         var note = Math.round(map(p.col.r + p.col.g, 0, 510, 0, scale.length-1));
         //console.log('note', scale[note]);
         if(p.bright > 0 && frameCount%10 == 0) {
-          synth.triggerAttackRelease(scale[note], p.bright*2);
+          //console.log('p.bright', p.bright);
+          var note_length = map(p.bright, 0, 20, 0, 1);
+          synth.triggerAttackRelease(scale[note], note_length);
         }
 
-      }
-
-
+    //  }
 }
 
 
