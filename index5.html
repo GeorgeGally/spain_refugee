@@ -43,7 +43,7 @@
   // SOUND TWEAKS
   var notehold = 0.87;
   var detune_ammt = -110;
-  var sound_step = 26;
+  var sound_step = 54;
   var reverb_ammt = 0.8;
   var delay_ammt = 0.53;
 
@@ -66,7 +66,7 @@
     function setup() {
       //load(url)
       frameRate = 40;
-      //addQuickSettings()
+      addQuickSettings()
       reset();
     }
 
@@ -91,10 +91,6 @@
     function draw() {
       ctx.background(245);
       drawParticles();
-      var p = engine.particles[note_counter%engine.length];
-      makeCircle(p)
-      var p = engine.particles[(note_counter+1)%engine.length];
-      makeCircle(p)
       if (chance(100)) {
         reset();
       }
@@ -104,11 +100,6 @@
       if (frameCount % sound_step == 0) playSong();
     }
 
-    function makeCircle(p){
-      var sz = p.bright * 4;
-      ctx.fillStyle = p.c;
-      ctx.HfillEllipse(w/2, h/2, sz, sz)
-    }
 
     function drawParticles() {
       //console.log(engine.particles[0]);
@@ -144,7 +135,7 @@
     //var synth = new Tone.PolySynth(6, Tone.MonoSynth).chain(reverb);
     //var synth = new Tone.PolySynth(3, Tone.DuoSynth).toMaster();
     //var synth = new Tone.PolySynth(8, Tone.SimpleAM).chain(pingPong, reverb)
-    var synth = new Tone.PolySynth(2, Tone.SimpleAM).chain(reverb)
+    var synth = new Tone.PolySynth(8, Tone.SimpleAM).chain(reverb)
 
     synth.set("detune", detune_ammt);
     //synth.set("detune", -600);
@@ -166,7 +157,7 @@
     function playSong() {
 
       note_counter++;
-      if(note_counter >= engine.particles.length-1) note_counter = 0;
+      if(note_counter > engine.particles.length-1) note_counter = 0;
       //note_counter = note_counter % engine.particles.length - 1;
       //for (var i = 0; i < engine.particles.length; i++) {
       var p = engine.particles[note_counter];
