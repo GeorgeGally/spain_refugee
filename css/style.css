@@ -1,15 +1,19 @@
-body { 
+body {
 	background: #fff;
 	font-family: Helvetica, arial, serif;
 	color: #fff; font-size: 10px;
 	margin: 0;
-	padding: 0;	
+	padding: 0;
 	overflow:hidden;
 	//cursor: none;
 	webkit-font-smoothing: antialiased;
 }
 
-
+video {
+	position: absolute;
+	left: 0;
+	top: 0;
+}
 canvas {
 	  -webkit-transform: translate3d(0,0,0);
   -moz-transform: translate3d(0,0,0);
@@ -84,8 +88,8 @@ canvas {
 	display: none;
 }
 */
-canvas { 
-	border: none; 
+canvas {
+	border: none;
 	margin: 0;
    }
 
@@ -167,7 +171,7 @@ canvas {
 		color: #fff;
 	}
 
-	.mute { 
+	.mute {
 		position: fixed !important;
 		bottom: 3%;
 		right: 2%;
@@ -223,7 +227,7 @@ padding: 4%;
 		text-align: center;
 	}
 /*
-@media only screen 
+@media only screen
 and (max-width : 400px) {
 canvas {
   width: 300px;
@@ -234,7 +238,7 @@ width: 300px;
 }
 
 
-@media only screen 
+@media only screen
 and (min-width : 401px) and (max-width : 620px) {
 canvas {
   width: 400px !important;
@@ -248,7 +252,7 @@ padding: 1%;
 }
 
 
-@media only screen 
+@media only screen
 and (max-width : 621px) and (max-width : 884px) {
 canvas {
   width: 580px;
@@ -261,7 +265,7 @@ padding: 2%;
 }
 }
 
-@media only screen 
+@media only screen
 and (min-width : 621px) and (max-width : 885px) {
 canvas {
   width: 600px;
@@ -274,7 +278,7 @@ padding: 3%;
 }
 }
 
-	@media only screen 
+	@media only screen
 and (min-width : 885px) {
 canvas {
   width: 800px;
@@ -285,5 +289,3 @@ width: 800px;
 }
 }
 */
-
-

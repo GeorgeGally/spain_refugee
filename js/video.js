@@ -1,4 +1,3 @@
-
 var video;
 var hidden_ctx;
 var showBgImg = false;
@@ -9,13 +8,13 @@ document.addEventListener("DOMContentLoaded", function() {
   video = document.createElement('video');
   document.body.appendChild(video);
 
-  video.autoplay  = true;
-  video.loop  = true;
+  video.autoplay = true;
+  video.loop = true;
   video.setAttribute("id", "gum-local");
   //video.setAttribute("style", "display:none;");
-  video.width = 320;
-  video.height = 240;
-
+  video.width = 160;
+  video.height = 120;
+  video.zIndex = 999;
 
   /*
    *  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
@@ -33,7 +32,10 @@ document.addEventListener("DOMContentLoaded", function() {
   // Put variables in global scope to make them available to the browser console.
   var constraints = window.constraints = {
     audio: false,
-    video: true
+    video: true,
+    advanced: [{
+      facingMode: "environment"
+    }]
   };
 
   function handleSuccess(stream) {
@@ -51,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
   function handleError(error) {
     if (error.name === 'ConstraintNotSatisfiedError') {
       errorMsg('The resolution ' + constraints.video.width.exact + 'x' +
-          constraints.video.width.exact + ' px is not supported by your device.');
+        constraints.video.width.exact + ' px is not supported by your device.');
     } else if (error.name === 'PermissionDeniedError') {
       errorMsg('Permissions have not been granted to use your camera and ' +
         'microphone, you need to allow the page access to your devices in ' +
@@ -68,29 +70,58 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-  console.log("enumerateDevices() not supported.");
-  return;
-}
+    console.log("enumerateDevices() not supported.");
+    return;
+  }
 
-// List cameras and microphones.
+  // List cameras and microphones.
 
-navigator.mediaDevices.enumerateDevices()
-  .then(function(devices) {
-    var msg = "";
-    devices.forEach(function(device) {
-      console.log(device);
-      if(device.kind == "videoinput")
-      msg += device.kind + ": " + device.label +
-        " id = " + device.deviceId +  "<br>";
+  navigator.mediaDevices.enumerateDevices()
+    .then(function(devices) {
+      var msg = "";
+      devices.forEach(function(device) {
+        if (device.kind == "videoinput") {
+          console.log(device);
+
+          msg += device.kind + ": " + device.label +
+            " id = " + device.deviceId + "<br>";
+        }
+      });
+      errorElement.innerHTML += '<p>' + msg + '</p>';
+    })
+    .catch(function(err) {
+      console.log(err.name + ": " + err.message);
     });
-    errorElement.innerHTML += '<p>' + msg + '</p>';
-  })
-  .catch(function(err) {
-    console.log(err.name + ": " + err.message);
-  });
 
 
   navigator.mediaDevices.getUserMedia(constraints).
-      then(handleSuccess).catch(handleError);
+  then(handleSuccess).catch(handleError);
 
-    })
+})
+
+
+function videoshit() {
+
+  hidden_ctx.drawImage(video, 0, 0, w, h);
+  sample = hidden_ctx.getImageData(0, 0, w, h);
+
+  ctx.fillStyle = rgba(255, 0.3);
+
+  for (var i = 0; i < engine.particles.length; i++) {
+    var p = engine.particles[i];
+
+    var pos = Math.round(Math.round(p.pos.x) + Math.round(p.pos.y) * w) * 4;
+    var r = sample.data[pos];
+    var g = sample.data[pos + 1];
+    var b = sample.data[pos + 2];
+    p.c = rgb(r, g, b);
+    p.col = {
+      r: r,
+      g: g,
+      b: b
+    }
+    p.bright = brightness(r, g, b, 0, 20);
+    //chanceLog(p.target.z);
+
+  }
+}

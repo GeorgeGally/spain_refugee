@@ -142,27 +142,7 @@ function playSong(){
 
 
 
-function videoshit(){
 
-  hidden_ctx.drawImage(video, 0,0, w, h);
-  sample = hidden_ctx.getImageData(0,0,w,h);
-
-  ctx.fillStyle = rgba(255, 0.3);
-
-  for (var i = 0; i < engine.particles.length; i++) {
-    var p = engine.particles[i];
-
-    var pos = Math.round(Math.round(p.pos.x)  + Math.round(p.pos.y) * w) * 4;
-    var r = sample.data[pos];
-    var g = sample.data[pos+1];
-    var b = sample.data[pos+2];
-    p.c = rgb(r,g,b);
-    p.col = {r: r, g: g, b: b}
-    p.bright = brightness(r,g,b, 0, 20);
-    //chanceLog(p.target.z);
-
-  }
-}
 </script>
 
 <script src="js/video.js"></script>
