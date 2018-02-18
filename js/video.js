@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // List cameras and microphones.
   var cams = [];
-  navigator.mediaDevices.enumerateDevices()
+  navigator.mediaDevices.enumerateDevices(constraints)
     .then(function(devices) {
       var msg = "";
       devices.forEach(function(device) {
@@ -81,14 +81,26 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       });
       errorElement.innerHTML += '<p>' + msg + '</p>';
+      constraints = window.constraints = {
+        audio: false,
+        // video: true,
+        // advanced: [{
+        //   facingMode: "environment"
+        // }]
+        video: {
+      sourceId: cams[cams.length-1].deviceId
+    }
+      };
+
+      navigator.mediaDevices.getUserMedia(constraints).
+      then(handleSuccess).catch(handleError);
     })
     .catch(function(err) {
       console.log(err.name + ": " + err.message);
     });
 
 
-  navigator.mediaDevices.getUserMedia(constraints).
-  then(handleSuccess).catch(handleError);
+
 
 })
 
