@@ -23,8 +23,8 @@ function createCanvas(_canvas_name){
 	body.appendChild(canvas);
 	var ctx = canvas.getContext('2d');
 
-		resize();
-		window.addEventListener("resize", resize, false);
+	resize();
+	window.addEventListener("resize", resize, false);
 
 	return ctx;
 }
@@ -66,6 +66,7 @@ function resize(w, h){
 		c[i].width = width;
 		c[i].height = height;
 	}
+	reFitCanvas(w, h);
 	//console.log("resize: " + w +":" + h);
 }
 
