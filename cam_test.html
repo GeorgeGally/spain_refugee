@@ -1,28 +1,46 @@
 <!DOCTYPE html>
-<html>
-<title>Creative Coding Yea!</title>
-<head>
-  <meta charset="utf-8">
-  <script language="javascript" src="js/creative_coding.js"></script>
-  <script language="javascript" src="js/canvas.js"></script>
-  <!-- <script language="javascript" src="js/raw_video.js"></script> -->
-  <script language="javascript" src="js/particle_engine.js"></script>
-  <script language="javascript" src="js/d3.js"></script>
-  <script language="javascript" src="js/webrtc.js"></script>
-  <script src="js/Tone.js"></script>
 
-  <link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
-  <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta name="description" content="WebRTC code samples">
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+  <meta itemprop="description" content="Client-side WebRTC code samples">
+  <meta itemprop="image" content="../../../images/webrtc-icon-192x192.png">
+  <meta itemprop="name" content="WebRTC code samples">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta id="theme-color" name="theme-color" content="#ffffff">
+  <script src="js/webrtc.js"></script>
+  <base target="_blank">
+
+  <title>getUserMedia</title>
+
+  <link rel="icon" sizes="192x192" href="../../../images/webrtc-icon-192x192.png">
+  <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="css/style.css">
 
 </head>
+
 <body>
 
-  <video id="gum-local" autoplay playsinline></video>
+  <div id="container">
 
-      <div id="errorMsg"></div>
+
+    <video id="gum-local" autoplay playsinline></video>
+
+    <div id="errorMsg"></div>
+
+    <p class="warning"><strong>Warning:</strong> if you're not using headphones, pressing play will cause feedback.</p>
+
+
+  </div>
+
+
+  <!-- <script src="../../../js/common.js"></script> -->
+  <!-- <script src="js/main.js"></script> -->
 
 <script>
-
 
 /*
  *  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
@@ -79,5 +97,4 @@ navigator.mediaDevices.getUserMedia(constraints).
 </script>
 
 </body>
-
 </html>
