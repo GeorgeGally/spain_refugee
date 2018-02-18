@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
   video.zIndex = 999;
 
   // 'use strict';
-  var videoSelect = document.querySelector('select#videoSource');
+  //var videoSelect = document.querySelector('select#videoSource');
   var errorElement = document.querySelector('#errorMsg');
   video = document.querySelector('video');
 
@@ -80,14 +80,14 @@ document.addEventListener("DOMContentLoaded", function() {
           // msg += device.kind + ": " + device.label+ "<br>"
             //+ " id = " + device.deviceId + "<br><br>";
             cams.push(device);
-            option.text = device.label || 'camera ' + (videoSelect.length + 1);
-            option.id = device.deviceId;
-            videoSelect.appendChild(option);
+            // option.text = device.label || 'camera ' + (videoSelect.length + 1);
+            // option.id = device.deviceId;
+            // videoSelect.appendChild(option);
         }
       });
       errorElement.innerHTML += '<p>' + msg + '</p>';
       var videoSource = cams[cams.length-1].deviceId;
-      console.log(videoSelect.id);
+      //console.log(videoSelect.id);
       //var videoSource = videoSelect.value;
       constraints = {
         audio: false,
@@ -131,7 +131,7 @@ function videoshit() {
       g: g,
       b: b
     }
-    p.bright = brightness(r, g, b, 0, 20);
+    p.bright = brightness(r, g, b, 0, 100);
     //chanceLog(p.target.z);
 
   }

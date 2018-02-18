@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<title>Creative Coding Yea!</title>
+<head>
+  <meta charset="utf-8">
+  <script language="javascript" src="js/creative_coding.js"></script>
+  <script language="javascript" src="js/canvas.js"></script>
+  <script language="javascript" src="js/particle_engine.js"></script>
+  <script language="javascript" src="js/d3.js"></script>
+  <script src="js/Tone.js"></script>
+
+  <link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" />
+
+</head>
+<body>
+
+<script>
+
+var ctx = createCanvas("canvas1");
+
+var data = [ 687,  772,  544,  621,  664,  695,  731,  792,  777,  637,  707,
+        778,  583,  595,  604,  682,  563,  591,  525,  564,  627,  594,
+        612,  497,  683,  619,  844,  810,  833,  736,  640,  745,  631,
+        859,  978,  841,  414,  304,  383,  801,  959,  355,  311,  723,
+        542,  448,  542,  397,  332,  478,  507,  411,  764,  456,  345,
+        372,  395,  588,  547,  572,  414,  298,  337,  449,  476,  339,
+        377,  555,  436,  405,  791,  492,  383,  254,  561,  457,  317,
+        321,  394,  637,  403,  543,  619,  373,  406,  363,  474,  343,
+        320,  403,  433,  490,  512,  507,  628,  428,  745,  452,  446,
+        824,  707,  536,  524,  802,  580,  726,  669,  452,  444,  290,
+        328,  442,  372,  357,  347,  336,  420,  366,  433,  343,  247,
+        174,  176,  339,  291,  240,  272,  268,  217,  216,  293,  266,
+        198,  254,  208,  230,  177,  252,  200,  225,  180,  289,  241,
+        284,  430,  281,  176,  333,  238,  173,  217,  366,  363,  206,
+        260,  371,  150,  206,  172,  215,  215,  191,  291,  213,  211,
+        258,  254,  203,  406,  301,  269,  447,  284,  433,  452,  440,
+        447,  316,  354,  352,  361,  453,  700,  345,  291,  476,  418,
+        408,  351,  687,  857,  548, 1329,  919,  866,  850,  837, 1138,
+       1299, 1221, 1057, 1340, 1311, 1199, 1154, 1188, 1607,  922, 1043,
+        983, 1448,  833, 1275, 1934, 1721, 1455, 1935, 2268, 2083, 2459];
+
+
+var engine = [];
+var engine2 = new particleEngine(0,0);
+engine2.delete(0);
+engine = new particleEngine(1, 10);
+var counter = 0;
+
+function setup(){
+  frameRate = 60;
+}
+
+
+for (var i = 0; i < data.length; i++) {
+  var d = data[i];
+  console.log(dec2bin(d));
+}
+
+function draw(){
+  ctx.background(0);
+
+  moveParticles();
+  drawParticles();
+  //drawParticles();
+  if(frameCount%5 == 0) {
+    counter++;
+    //addParticle();
+    if(counter > data.length) counter = 0;
+  }
+
+}
+
+
+function dec2bin(dec){
+  var s = (dec >>> 0).toString(2);
+    //if(s.length < 9) s +="0";
+    //if(s.length < 10) s +="0";
+    s.substring(0,9);
+    return s
+}
+
+
+
+
+function moveParticles(){
+  var d = dec2bin(data[counter]);
+  for (var i = 0; i < engine.length; i++) {
+    var p = engine.particles[i];
+    var n = d.substring(i, i+1);
+    oneOrZero(p, n);
+    //p.pos.y -= p.speed.y;
+    if(p.pos.y < 0) {
+      engine.delete(p.me);
+    }
+  }
+}
+
+function oneOrZero(p, n){
+  //console.log('n', n);
+  p.c = rgb(0);
+  if(n == "1") p.c = "red";
+}
+
+var wobble = 100;
+var speed = 10;
+
+function drawParticles(){
+  if(engine.length> 0){
+  for (var i = 0; i < engine.particles.length; i++) {
+    var p = engine.particles[i];
+    ctx.fillStyle = p.c;
+    //var y = p.pos.y + Math.sin(frameCount/speed + i) * wobble;
+    //var x = 0;
+    //if(p.pos.x > w/2) x = w/2;
+    ctx.fillRect(0, p.pos.y - engine.grid.spacing.y/2, w, engine.grid.spacing.y);
+
+  }
+}
+}
+
+
+
+
+function mapData(data){
+  var d = [];
+ for (var key in data) {
+   d.push(data[key]);
+   //console.log(data[key]);
+ }
+
+return d;
+}
+
+
+</script>
+
+</body>
+
+</html>
