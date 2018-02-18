@@ -47,7 +47,7 @@ function createGLCanvas(canvas_name){
 	body.appendChild(canvas);
 	var gl = canvas.getContext('webgl');
 	if (!gl) var gl = canvas.getContext('webgl') || canvas.getContext("experimental-webgl");
-	resize(canvas_name);
+	resize();
 	window.addEventListener("resize", resize, false);
 	return gl;
 }
@@ -58,7 +58,7 @@ function reFitCanvas(_w, _h){
 }
 
 
-function resize(w, h){
+function resize(){
 	var c = document.getElementsByTagName('canvas');
 	width = w = window.innerWidth;
 	height = h = window.innerHeight;
@@ -69,6 +69,21 @@ function resize(w, h){
 	reFitCanvas(w, h);
 	//console.log("resize: " + w +":" + h);
 }
+
+
+window.addEventListener("orientationchange", function() {
+    // Announce the new orientation number
+    //alert(window.orientation);
+		var iOS = navigator.userAgent.match(/(iPad|iPhone|iPod)/g);
+var viewportmeta = document.querySelector('meta[name="viewport"]');
+if (iOS && viewportmeta) {
+	if (viewportmeta.content.match(/width=device-width/)) {
+		viewportmeta.content = viewportmeta.content.replace(/width=[^,]+/, 'width=1');
+	}
+	viewportmeta.content = viewportmeta.content.replace(/width=[^,]+/, 'width=' + window.innerWidth);
+}
+		resize();
+}, false);
 
 
 function createHiddenCanvas(canvas_name){

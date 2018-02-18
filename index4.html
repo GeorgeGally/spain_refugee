@@ -42,28 +42,21 @@
 
 var ctx = createCanvas("canvas1");
 
-var engine = new particleEngine(20, 20);
-var grid = new Grid(2, 20);
-console.log(grid);
+var engine = new particleEngine(1, 8);
+
 var old_red = [];
 var old_green = [];
 var old_blue = [];
 var pixelsize = 40;
-var colours_on = true;
+
 var data = [];
 var url = "data/country_values.json";
-var c = ["blue", "red", "white", "yellow"];
-var col;
+
 function setup(){
   //load(url)
   frameRate = 60;
 
-  reset();
-}
-
-function reset(){
-    engine = new particleEngine(randomInt(1,3), randomInt(2,20));
- for (var i = 0; i < engine.particles.length; i++) {
+  for (var i = 0; i < engine.particles.length; i++) {
     var p = engine.particles[i];
     p.scale = 1;
     p.target.z = random(-15, 15);
@@ -71,58 +64,43 @@ function reset(){
     p.bright = 0;
     p.col =  [];
   }
-  col = c[randomInt(0, c.length-1)];
-  colours_on = randomInt(0,1);
 }
+
 
 
 function draw(){
   ctx.background(245);
-  drawParticles();
-  if(chance(100)) {
-    reset();
-  }
   videoshit();
 
-
-  if(frameCount%5 == 0) playSong();
+  drawParticles();
+  if(frameCount%20 == 0) playSong();
 }
 
 
 function drawParticles(){
-  //console.log(engine.particles[0]);
-  for (var i = 0; i < engine.length; i++) {
+
+  for (var i = 0; i < engine.particles.length; i++) {
     var p = engine.particles[i];
-    // console.log(p.bright);
-    chooseColour(p);
     ctx.fillStyle = p.c;
-    //ctx.fillStyle = randomGrey();
-    ctx.centreFillRect(p.pos.x, p.pos.y, p.sz.x, p.sz.y + 1);
+    ctx.centreFillRect(p.pos.x, p.pos.y, p.sz.x, p.sz.y);
   }
 
 }
 
-function chooseColour(p){
-  if(!colours_on) {
-    p.c = "black";
-    if(p.bright > 50) {
-      p.c = col;
-    }
-  }
-}
+
 
 ////// synth stuff
 
-var reverb = new Tone.JCReverb(0.8).connect(Tone.Master);
-var pingPong = new Tone.PingPongDelay("4n", 0.2).toMaster();
+var reverb = new Tone.JCReverb(0.3).connect(Tone.Master);
+var pingPong = new Tone.PingPongDelay("1n", 0.1).toMaster();
 var delay = new Tone.FeedbackDelay(0.9);
 
-//var synth = new Tone.PolySynth(6, Tone.MonoSynth).chain(reverb);
+var synth = new Tone.PolySynth(6, Tone.MonoSynth).chain(reverb);
 //var synth = new Tone.PolySynth(3, Tone.MonoSynth).toMaster();
 //var synth = new Tone.SimpleAM().toMaster();
 //var synth = new Tone.PolySynth(3, Tone.DuoSynth).toMaster();
-//var synth = new Tone.PolySynth(8, Tone.SimpleAM).chain(pingPong, reverb)
-var synth = new Tone.PolySynth(8, Tone.SimpleAM).chain(reverb)
+// var synth = new Tone.PolySynth(8, Tone.SimpleAM).chain(pingPong, reverb)
+//var synth = new Tone.PolySynth(8, Tone.SimpleAM).chain(reverb)
 
 synth.set("detune", -1200);
 //synth.set("detune", -100);
@@ -143,16 +121,16 @@ var scale =  ["C1", "D#1", "F1", "F#1", "G1", "A#1","C2", "D#2", "F2", "F#2", "G
 var note_counter = 0;
 
 function playSong(){
-
+      //
       note_counter++;
       note_counter = note_counter%engine.particles.length-1;
       //for (var i = 0; i < engine.particles.length; i++) {
         var p = engine.particles[note_counter];
         var note = Math.round(map(p.col.r + p.col.g, 0, 510, 0, scale.length-1));
         //console.log('note', scale[note]);
-        if(p.bright > 0) {
+        if(p.bright > 0 && frameCount%10 == 0) {
           //console.log('p.bright', p.bright);
-          var note_length = map(p.bright, 0, 100, 0, 0.5);
+          var note_length = map(p.bright, 0, 20, 0, 1);
           synth.triggerAttackRelease(scale[note], note_length);
         }
 
@@ -163,9 +141,9 @@ function playSong(){
 
 
 </script>
-<!-- <div class="select">
+<div class="select">
   <label for="videoSource">Video source: </label><select id="videoSource"></select>
-</div> -->
+</div>
 <script src="js/video.js"></script>
 </body>
 </html>
