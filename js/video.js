@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", function() {
   video.height = 120;
   video.zIndex = 999;
 
-  'use strict';
-
+  // 'use strict';
+  var videoSelect = document.querySelector('select#videoSource');
   var errorElement = document.querySelector('#errorMsg');
   video = document.querySelector('video');
 
@@ -32,9 +32,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function handleSuccess(stream) {
     var videoTracks = stream.getVideoTracks();
-    console.log('videoTracks', videoTracks);
-    console.log('Got stream with constraints:', constraints);
-    console.log('Using video device: ' + videoTracks[0].label);
+    // console.log('videoTracks', videoTracks);
+    // console.log('Got stream with constraints:', constraints);
+    // console.log('Using video device: ' + videoTracks[0].label);
     stream.oninactive = function() {
       console.log('Stream inactive');
     };
@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function() {
   navigator.mediaDevices.enumerateDevices(constraints)
     .then(function(devices) {
       var msg = "";
+      var option = document.createElement('option');
       devices.forEach(function(device) {
         if (device.kind == "videoinput") {
           console.log(device);
@@ -78,10 +79,14 @@ document.addEventListener("DOMContentLoaded", function() {
           msg += device.kind + ": " + device.label+ "<br>" +
             " id = " + device.deviceId + "<br><br>";
             cams.push(device);
+            option.text = device.label || 'camera ' + (videoSelect.length + 1);
+            videoSelect.appendChild(option);
         }
       });
       errorElement.innerHTML += '<p>' + msg + '</p>';
-      var videoSource = cams[cams.length-1].deviceId
+      var videoSource = cams[cams.length-1].deviceId;
+      console.log(videoSelect.value);
+      //var videoSource = videoSelect.value;
       constraints = {
         audio: false,
         // video: true,

@@ -23,6 +23,14 @@ video {
 	position: absolute;
 	bottom: 0;
 	right: 0;
+	z-index: 99;
+}
+
+#videoSource {
+	position: absolute;
+	z-index: 999;
+	bottom: 10;
+	right: 10;
 }
 canvas {
 	  -webkit-transform: translate3d(0,0,0);
